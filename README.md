@@ -8,6 +8,34 @@
 This crate providers a procedural derive macro `ConstEnum`, which will provide a `const` implementation of the `From`
 trait for converting an `enum` based on their `repr` type.
 
+Unfortunately Rust Stable does not currently contain all required features for implementing this crate.
+To use of this library, you must use a recent Rust Nightly release and add the following feature flags to your crate root:
+
+```rust
+#![feature(const_trait_impl)]   // always required
+```
+
+Here is a simple example of how this library can be used:
+
+```rust
+#![feature(const_trait_impl)]
+
+use const_enum::ConstEnum;
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, ConstEnum)]
+#[repr(u8)]
+enum Test {
+    A = 0b010,
+    B = 0b100,
+    C = 0b001
+}
+
+pub fn main() {
+    println!("{:?}", Test::from(0b010 as u8));
+    println!("{:?}", u8::from(Test::A));
+}
+```
+
 ## License
 
 Licensed under either of
