@@ -56,8 +56,8 @@ pub fn const_enum(input: NativeTokenStream) -> NativeTokenStream {
     let input = syn::parse_macro_input!(input as syn::DeriveInput);
 
     let enum_name = input.ident;
-    let enum_type = get_enum_repr_type(&input.attrs);
     let enum_variants = get_enum_variants(&input.data);
+    let enum_type = get_enum_repr_type(&input.attrs);
     let match_impl = build_from_match(&enum_name, &enum_variants);
 
     let expanded = quote! {
@@ -87,12 +87,12 @@ fn get_enum_repr_type(attrs: &Vec<syn::Attribute>) -> syn::Ident {
     let repr_tokens = repr_attr.tokens.clone();
     let mut repr_tokens_iter = repr_tokens.into_iter();
 
-    let first_token = repr_tokens_iter.next().unwrap();
-    if repr_tokens_iter.next().is_some() {
+    let first_token = repr_tokens_iter.next();
+    if first_token.is_none() || repr_tokens_iter.next().is_some() {
         panic!("malformed repr attribute, expected repr(TYPE)");
     }
 
-    match first_token.clone() {
+    match first_token.unwrap().clone() {
         TokenTree::Group(repr_items) => {
             if repr_items.delimiter() != Delimiter::Parenthesis {
                 panic!("malformed repr attribute, expected repr(TYPE)");

@@ -1,0 +1,17 @@
+error: proc-macro derive panicked
+ --> tests/ui/04-fail-repr-multiple-type.rs:5:10
+  |
+5 | #[derive(ConstEnum)]
+  |          ^^^^^^^^^
+  |
+  = help: message: malformed repr attribute, expected single type
+
+error[E0566]: conflicting representation hints
+ --> tests/ui/04-fail-repr-multiple-type.rs:6:8
+  |
+6 | #[repr(u8, u8)]
+  |        ^^  ^^
+  |
+  = note: `#[deny(conflicting_repr_hints)]` on by default
+  = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+  = note: for more information, see issue #68585 <https://github.com/rust-lang/rust/issues/68585>
