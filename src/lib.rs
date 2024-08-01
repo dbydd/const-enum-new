@@ -144,7 +144,7 @@ fn build_from_match(enum_name: &syn::Ident, variants: &Vec<EnumVariant>) -> Toke
 
     // Add exhaustive default match arm resulting in error
     match_arms.extend(quote! {
-        _ => panic!("invalid value provided"),
+        any => panic!("invalid value provided:{:?}",any),
     });
 
     return quote! {
