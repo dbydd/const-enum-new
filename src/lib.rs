@@ -61,13 +61,13 @@ pub fn const_enum(input: NativeTokenStream) -> NativeTokenStream {
     let match_impl = build_from_match(&enum_name, &enum_variants);
 
     let expanded = quote! {
-        impl const core::convert::From<#enum_name> for #enum_type {
+        impl core::convert::From<#enum_name> for #enum_type {
             fn from(value: #enum_name) -> Self {
                 value as Self
             }
         }
 
-        impl const core::convert::From<#enum_type> for #enum_name {
+        impl core::convert::From<#enum_type> for #enum_name {
             fn from(value: #enum_type) -> Self {
                 #match_impl
             }
